@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:id="@+id/activity_main">
+
+    <ImageView
+        android:id="@+id/btnSend"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:padding="4dp"
+        android:src="@drawable/ic_send_button"
+        />
+
+    <ImageView
+        android:id="@+id/emoji_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:padding="4dp"
+        android:layout_marginLeft="10dp"
+        android:src="@mipmap/smile"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:clickable="true"
+        android:src="@drawable/ic_logout_button"
+        app:fabSize="mini" />
+
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textField"
+        android:layout_alignParentBottom="true"
+        app:emojiconSize="29sp"
+        android:hint="Enter your message..."
+        android:layout_toLeftOf="@+id/btnSend"
+        android:layout_toRightOf="@+id/emoji_button"
+
+        />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/textField"
+        android:id="@+id/list_of_messages"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="16dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="16dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"></ListView>
+</RelativeLayout>

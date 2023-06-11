@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "647294317015",
+    "project_id": "intricate-tempo-389018",
+    "storage_bucket": "intricate-tempo-389018.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647294317015:android:9231123670cf1be0db9b92",
+        "android_client_info": {
+          "package_name": "com.example.simplechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647294317015-5tmka00kjf2ib2v2picq7ps8712q3rt8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.simplechat",
+            "certificate_hash": "b816893e4493b9b4aca258a988c644537595c77f"
+          }
+        },
+        {
+          "client_id": "647294317015-99e0gvp5227rhgheajtu3o34kj4asrvo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMcG2yPzbNDuXMS9QP8alD-njOohq55YM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647294317015-99e0gvp5227rhgheajtu3o34kj4asrvo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
