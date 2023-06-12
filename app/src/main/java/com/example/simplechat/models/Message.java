@@ -1,21 +1,11 @@
-package com.example.simplechat;
-
-import java.util.Date;
+package com.example.simplechat.models;
 
 public class Message {
     private String userName;
     private String textMessage;
-    private long messageTime;
+    private String messageTime;
 
-    public Message(){
-    }
-
-    public Message(String userName, String textMessage) {
-        this.userName = userName;
-        this.textMessage = textMessage;
-
-        this.messageTime = new Date().getTime();
-    }
+    public Message(){}
 
     public String getUserName() {
         return userName;
@@ -29,7 +19,7 @@ public class Message {
         this.textMessage = textMessage;
     }
 
-    public void setMessageTime(long messageTime) {
+    public void setMessageTime(String messageTime) {
         this.messageTime = messageTime;
     }
 
@@ -37,7 +27,7 @@ public class Message {
         return textMessage;
     }
 
-    public long getMessageTime() {
+    public String getMessageTime() {
         return messageTime;
     }
 }

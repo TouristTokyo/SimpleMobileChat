@@ -2,7 +2,7 @@ package com.example.simplechat;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.simplechat.api.TimeApi;
+import com.example.simplechat.models.Message;
+import com.example.simplechat.utils.DateUtils;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.github.library.bubbleview.BubbleTextView;
@@ -19,6 +22,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.ParseException;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
@@ -34,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView emojiButton;
     private ImageView submitButton;
     private EmojIconActions emojIconActions;
+    private TimeApi api;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -62,30 +68,43 @@ public class MainActivity extends AppCompatActivity {
         emojIconActions.ShowEmojIcon();
         logoutButton = findViewById(R.id.logout);
 
+        api = TimeApi.getInstance(this);
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (emojiconEditText.getText().toString().equals("")) {
-                    return;
-                }
-                FirebaseDatabase.getInstance()
-                        .getReference()
-                        .push()
-                        .setValue(new Message(
-                                FirebaseAuth.getInstance().getCurrentUser().getDisplayName(),
-                                emojiconEditText.getText().toString()));
-                emojiconEditText.setText("");
+
+        submitButton.setOnClickListener(view -> {
+            if (emojiconEditText.getText().toString().equals("")) {
+                return;
             }
+            api.makeGetRequest("/Europe/Moscow",
+                    response -> {
+                        Message message = new Message();
+                        message.setUserName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+                        message.setTextMessage(emojiconEditText.getText().toString());
+
+                        String key = "\"datetime\":";
+                        String responseData = response.substring(response.indexOf(key));
+                        String result = responseData.substring(key.length() + 1, responseData.indexOf("\","));
+
+                        try {
+                            message.setMessageTime(DateUtils.getTimeFromStringDate(result));
+                        } catch (ParseException e) {
+                            Log.e("dateUtils", e.getMessage());
+                        }
+
+                        FirebaseDatabase.getInstance()
+                                .getReference()
+                                .push()
+                                .setValue(message);
+
+                        emojiconEditText.setText("");
+                    },
+                    error -> Log.e("timeApi", error.getMessage()));
         });
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().build(),
-                        SIGN_IN_CODE);
-            }
+        logoutButton.setOnClickListener(view -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().build(),
+                    SIGN_IN_CODE);
         });
 
 
@@ -102,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         ListView listOfMessages = findViewById(R.id.list_of_messages);
         adapter = new FirebaseListAdapter<Message>(this, Message.class, R.layout.list_item,
                 FirebaseDatabase.getInstance().getReference()) {
+
             @Override
             protected void populateView(View v, Message model, int position) {
                 TextView messageUser, messageTime;
@@ -112,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
                 messageUser.setText(model.getUserName());
                 messageText.setText(model.getTextMessage());
-                messageTime.setText(DateFormat.format("dd-mm-yyyy HH:mm:ss", model.getMessageTime()));
+                messageTime.setText(model.getMessageTime());
             }
         };
 
